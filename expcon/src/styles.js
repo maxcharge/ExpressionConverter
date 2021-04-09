@@ -3,15 +3,14 @@ const  styles={
     parentContainer:{
         display:"flex",
         flexDirection:"column",
-        minWidth:"400px",
         maxWidth:"500px",
-        width:"25vw",
+        width:"100%",
         height:"100%",
         margin:"auto",
         marginTop:"50px",
-        backgroundColor:"#F5F5F5",
+        //backgroundColor:"#F5F5F5",
         padding: "10px",
-        boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
+        //boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
     },
 
     heading:{
