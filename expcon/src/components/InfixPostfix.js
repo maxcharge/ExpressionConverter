@@ -332,7 +332,6 @@ function InfixPostfix() {
                 type="radio"
                 name="react-tips"
                 value="option1"
-                checked={true}
                 onClick={handleRadio}
                 className="form-check-input"
                 />
