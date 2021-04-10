@@ -80,6 +80,7 @@ const  styles={
         opacity:1,
         color:"#F5F5F5", 
         textAlign:"center",
+        padding:"2px",
     }
 
 }
