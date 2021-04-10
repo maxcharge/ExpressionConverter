@@ -3,11 +3,8 @@ const  styles={
     parentContainer:{
         display:"flex",
         flexDirection:"column",
-        maxWidth:"500px",
-        width:"100vw",
-        height:"100%",
         margin:"auto",
-        marginTop:"50px",
+        marginTop:"20px",
         justifyContent:"center",
         justifyItems:"center",
         alignContent:"center",
@@ -24,6 +21,7 @@ const  styles={
 
     text:{
         textAlign:"left",
+        color:"#404040",
         margin:"10px",
         fontWeight:"Bold",
         fontSize:"",
@@ -33,7 +31,7 @@ const  styles={
         display:"flex",
         flexDirection:"column",
         maxWidth:"500px",
-        width:"90vw",
+        width:"90%",
         height:"100px",
         marginBottom:"20px",
         backgroundColor:"#F5F5F5",
@@ -43,15 +41,14 @@ const  styles={
 
     inputBox1:{
         border: "1px solid #dedede",
-        width:"85%",
-        borderRadius: "2px",
+        width:"100%",
         display: "flex",
+        borderRadius: "2px",
         fontSize: "16px",
         padding: "10px",
     },
     
     inputBox2:{
-        cursor:"grab",
         border: "1px solid #dedede",
         borderRadius: "2px",
         display: "flex",
@@ -72,7 +69,7 @@ const  styles={
     },
 
     btn:{
-        width:"15%",
+        width:"20%",
         fontWeight:"bold",
         borderRadius: "3px",
         border: "0.2px solid #dedede",
@@ -81,7 +78,40 @@ const  styles={
         color:"#F5F5F5", 
         textAlign:"center",
         padding:"2px",
-    }
+    },
+
+    List:{
+        display:"flex",
+        flexDirection:"row",
+        maxWidth:"500px",
+        width:"90%",
+        marginBottom:"20px",
+        //backgroundColor:"#F5F5F5",
+        padding: "10px",
+        textAlign:"center",
+        //boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
+    },
+
+    Listelement:{
+        //border: "1px solid #dedede",
+        borderRadius: "2px",
+        display: "flex",
+        flexDirection:"column",
+        padding: "10px",
+        margin:"auto"
+    },
+
+    radio:{
+        display:"flex",
+        flexDirection:"row",
+        maxWidth:"500px",
+        width:"90%",
+        marginBottom:"20px",
+        backgroundColor:"#F5F5F5",
+        padding: "10px",
+        justifyContent:"space-around",
+        boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
+    },
 
 }
 

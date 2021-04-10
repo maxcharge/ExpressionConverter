@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import styles from '../styles'
+import ListItem from './ListItem'
 
 
 
@@ -9,193 +10,255 @@ function InfixPostfix() {
 
     const [Prefix, setPrefix] = useState("");
 
-    class Stack {  
-        constructor() 
-        { 
-            this.items = []; 
-        } 
-        push(element){
-            this.items.push(element); 
-        } 
-        pop(){
-            if (this.items.length == 0) 
-                return "Underflow"; 
-            return this.items.pop();
-        } 
-        peek(){
-            return this.items[this.items.length - 1]; 
+    class stacker
+    {
+        constructor(size=100)
+        {
+            this.size = size;
+            this.items = [];
+            this.top = -1; // we can also is -> this.items.length
         }
-        isEmpty(){
-            return this.items.length == 0; 
+
+        // Getters for stack below
+
+        get lastIndex()
+        {
+            // this return the index of last item
+            return this.top;
         }
-        printStack(){
-            var str = ""; 
-            for (var i = 0; i < this.items.length; i++) 
-                str += this.items[i] + " "; 
-            return str;  
+
+        get stackLen()
+        {
+            return this.items.length;
         }
+
+        get leftSize()
+        {
+            return this.size-this.stackLen;
+        }
+
+        get peek()
+        {
+            if(this.isEmpty() == true)
+                {
+                    return console.log("stack is empty");
+                }
+            else
+                {
+                    return console.log(this.items[this.top]), this.items[this.top];
+                }
+        }
+
+    // Setters for stack below
+        getItem(index)
+        {
+            if(index > this.top || index < 0)
+                {
+                    return console.log("Wrong Index")
+                }
+            else
+                {
+                    return this.items[index], console.log(this.items[index]);
+                }
+        }
+        isFull()
+        {
+            if(this.top==this.size-1)
+                {
+                    return true;
+                }
+            else
+            {
+                return false;
+            }
+        }
+
+        isEmpty()
+        {
+            if(this.top < 0)
+                {
+                    return true;
+                }
+            else
+                {
+                    return false;
+                }
+        }
+
+        push(element)
+        {
+            if(this.isFull() == true)
+                {
+                    return console.log("Stack is Full Now");
+                }
+            else
+                {
+                    this.top++;
+                    this.items[this.top] = element;
+                    return true;
+                }
+            
+        }
+
+        pop()
+        {
+            var data;
+            if(this.isEmpty() == true)
+                {
+                    return false;
+                }
+            else
+                {
+                    // data = this.items[this.top];
+                    // this.items[this.top] = undefined;
+                    // or we can use 
+                    data = this.items.splice(this.top, 1); // this will return an array with single element more efficient
+                    this.top--;
+                    return data[0];
+                }
+        }
+
+        traverse()
+        {
+            return this.items;
+        }
+
+
     }
-    class conversion{
-        constructor(){
-            this.infix="";
-            this.postfix="";
-            this.prefix="";
-            this.returner="";
-        }
-        setDataPost(data){
-            this.infix=data+")";
-        }
-        setDataPre(data){
-            this.infix=")"+data;
-            this.infix=this.infix.split("").reverse().join("");
-            console.log(this.infix);
-        }
-        toPostfix(){
-            var stack =new Stack();
-            stack.push("(");
-            for(var i=0;i<this.infix.length;i++){
-                var a="";
-                var op=0;
-                a=this.infix[i];
-                if(!(/[^a-z\d]/i.test(a))){
-                    op=1;
-                }
-                else if(a=="("){
-                    op=2;
-                }
-                else if(a==")"){
-                    op=3;
-                }
-                else{
-                    op=4;
-                }
-                switch(op){
-                    case 1:
-                        this.postfix+=a;
-                        break;
-                    case 2:
-                        stack.push(a);
-                        break;
-                    case 3:
-                        do{
-                            this.postfix+=stack.peek();
-                            stack.pop();
-                        }while(stack.peek()!="(")
-                        stack.pop();
-                        break;
-                    case 4:
-                        var flag=1;
-                        while(flag==1){
-                            if(this.precedence(a)<=this.precedence(stack.peek()) && this.associativity(a)==0){
-                                this.postfix+=stack.peek();
-                                stack.pop();
+
+    // INFIX TO POSTFIX
+
+    function precidencer(item)
+    {
+        /*
+        precedence are :
+                * > ^ > / > % > + > - > ) > ( > any operand
+        */
+        var operators = ['','(',')','-','+','%','/','*','^'];
+
+        for(var j = 0; j < operators.length; j++)
+            {
+                if(item == operators[j])
+                    {
+                        return j;
+                    }
+            }
+        
+            return 0;
+    }
+
+    // Infix to postfix conversion
+    function infixToPostfix(expression, tab = 0)
+    {
+        var postfixExpression = "", current;
+        var table = {
+            exp: [],
+            stak: [],
+            conexp: [],
+        };
+        // step 1: put a ')' at the end of expression
+        expression += ')';
+
+        // creating a stack
+        var infixStack = new stacker();
+
+        // step 2: push '(' to stack
+        infixStack.push('(');
+
+        // traversing whole expression now
+        for(var i = 0; i < expression.length; i++ )
+            {
+                current = expression[i];
+                if(precidencer(current) == 1)
+                    {
+                        infixStack.push('(');
+                    }
+
+                else if(precidencer(current) == 0) 
+                    {
+                        postfixExpression += current;
+                    }
+
+                else if(precidencer(current) == 2)
+                    {
+                        while(infixStack.peek != '(')
+                            {
+                                postfixExpression += infixStack.pop();
                             }
-                            else{
-                                flag=0;
+                        if(infixStack.peek == '(')
+                            {
+                                infixStack.pop();
                             }
-                        }
-                        stack.push(a);
-                        break;
-                }
+                    }
+                else if(precidencer(current) > 2)
+                    {
+                        if(precidencer(current) >= precidencer(infixStack.peek))
+                            {
+                                infixStack.push(current);
+                                
+                            }
+                        else
+                            {
+                                while(infixStack.peek != '(')
+                                    {
+                                        postfixExpression += infixStack.pop();
+                                    }
+                                infixStack.push(current);
+                                
+                            }
+                    }
+                
+                if(tab==1)
+                    {
+                        table.exp[i] = current;
+                        table.stak[i] = infixStack.traverse().join("");
+                        table.conexp[i] = postfixExpression;
+                    }
             }
-            this.returner=this.postfix;
-            this.postfix="";
-            this.infix="";
-            return this.returner;
+        
+            return {postfixExpression:postfixExpression, table: table};
+    }
+
+    // reverser
+
+    function reverser(expression)
+    {
+        var newExpression = expression.split("");
+        
+        for(var i = 0; i < expression.length; i++)
+        {
+            if(newExpression[i] == ')')
+                {
+                    newExpression[i] = '(';
+                }
+            else if(newExpression[i] == '(')
+                {
+                    newExpression[i] = ')';
+                }
         }
-        toPrefix(){
-            var stack =new Stack();
-            stack.push("(");
-            for(var i=0;i<this.infix.length;i++){
-                var a="";
-                var op=0;
-                a=this.infix[i];
-                if(!(/[^a-z\d]/i.test(a))){
-                    op=1;
-                }
-                else if(a=="("){
-                    op=2;
-                }
-                else if(a==")"){
-                    op=3;
-                }
-                else{
-                    op=4;
-                }
-                switch(op){
-                    case 1:
-                        this.postfix+=a;
-                        break;
-                    case 2:
-                        stack.push(a);
-                        break;
-                    case 3:
-                        do{
-                            this.postfix+=stack.peek();
-                            stack.pop();
-                        }while(stack.peek()!="(")
-                        stack.pop();
-                        break;
-                    case 4:
-                        var flag=1;
-                        while(flag==1){
-                            if(this.precedence(a)<this.precedence(stack.peek()) && this.associativity(a)==0){
-                                this.postfix+=stack.peek();
-                                stack.pop();
-                            }
-                            else if(this.precedence(a)==this.precedence(stack.peek()) && this.associativity(a)==1){
-                                this.postfix+=stack.peek();
-                                stack.pop();
-                            }
-                            else{
-                                flag=0;
-                            }
-                        }
-                        stack.push(a);
-                        break;
-                }
-            }
-            this.prefix=this.postfix.split("").reverse().join("");
-            this.returner=this.prefix;
-            this.postfix="";
-            this.infix="";
-            this.prefix="";
-            return this.returner;
+
+        return newExpression.reverse().join("");
+    }
+    function infixToPrefix(expression, tab=0)
+    {
+        expression = infixToPostfix(reverser(expression), tab);
+        return {prefixExpression:reverser(expression['postfixExpression']), table:expression['table']};
+    }
+
+
+    function checker(expression)
+    {
+        if(precidencer(expression[0]) > 2)
+        {
+            return 1;
         }
-        precedence(data){
-            if(data=="+" || data=="-"){
-                return 1;
-            }
-            if(data=="*" || data=="/"){
-                return 2;
-            }
-            if(data=="^"){
-                return 3;
-            }
-            if(data=="("){
-                return 0;
-            }
-            return 9;
-        }
-        associativity(data){
-            if(data=="^"){
-                return 1;
-            }
+        else
+        {
             return 0;
         }
-    }  
-    function submit(inputData){
-            var c=new conversion(inputData);
-            //var inputData=document.getElementById("expression").value;
-            c.setDataPost(inputData);
-            setPostfix(c.toPostfix());
-            // document.getElementById("Postfix").innerHTML="Postfix:  "+postfix;
-            c.setDataPre(inputData);
-            setPrefix(c.toPrefix());
-            //document.getElementById("Prefix").innerHTML="Prefix:  "+prefix;
-            console.log(Postfix);
-            console.log(Prefix);
     }
+
+
 
 
 
@@ -209,14 +272,27 @@ function InfixPostfix() {
         e.target.style.opacity=0.5;
     }
 
+    const handleSubmit=()=>{
+        setPostfix(infixToPostfix(infix).postfixExpression);
+        setPrefix(infixToPrefix(infix).prefixExpression);
+    }
+
+    const [list, setList] = useState({exp:[],stak:[],conexp:[]});
+
     return (
         <>
             <div style={styles.formBox}>
                 <div style={styles.text}>Infix Expression</div>
                 <div style={{display:"flex",flexDirection:"row"}} >
                     <input style={styles.inputBox1} onChange={event=>setInfix(event.target.value)} placeholder="For example a+b/c" />
-                    <button onMouseEnter={handleEnter} onMouseLeave={handleOut} type="submit" onClick={event=>submit(infix)} style={styles.btn}>
-                        Submit
+                    <button 
+                    onMouseEnter={handleEnter} 
+                    onMouseLeave={handleOut} 
+                    type="submit" 
+                    onClick={
+                        handleSubmit
+                        } style={styles.btn}>
+                        Done
                     </button>    
                 </div>
             </div>
@@ -234,6 +310,49 @@ function InfixPostfix() {
                 {Prefix}
                 </div>
             </div>
+
+            <div style={styles.radio}>
+            <label>
+                <input
+                type="radio"
+                name="react-tips"
+                value="option1"
+                onClick={()=>setList(infixToPostfix(infix,1).table)}
+                className="form-check-input"
+                />
+                Postfix Table
+            </label>
+            <label>
+                <input
+                type="radio"
+                name="react-tips"
+                value="option2"
+                onClick={()=>setList(infixToPrefix(infix,1).table)}
+                className="form-check-input"
+                />
+                Prefix Table
+            </label>
+            </div>
+
+            <div style={styles.List}>
+                
+                <ol style={styles.Listelement} >
+                <h3>Character</h3>
+                {list.exp.map(article => (<ListItem>{article}</ListItem>))}
+                </ol>
+                <hr style={{borderTop: "3px solid #bbb"}}/>
+                <ol style={styles.Listelement} >
+                <h3>Stack</h3>
+                {list.stak.map(article => (<ListItem>{article}</ListItem>))}
+                </ol>
+                <hr style={{borderTop: "3px solid #bbb"}}/>
+                <ol style={styles.Listelement} >
+                <h3>Postfix</h3>
+                {list.conexp.map(article => (<ListItem>{article}</ListItem>))}
+                </ol>
+
+            </div>
+
 
         </>
     )
