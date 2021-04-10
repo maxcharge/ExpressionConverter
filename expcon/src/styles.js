@@ -81,7 +81,7 @@ const  styles={
     },
 
     List:{
-        display:"flex",
+        display:"none",
         flexDirection:"row",
         maxWidth:"500px",
         width:"90%",

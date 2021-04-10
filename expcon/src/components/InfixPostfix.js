@@ -275,9 +275,24 @@ function InfixPostfix() {
     const handleSubmit=()=>{
         setPostfix(infixToPostfix(infix).postfixExpression);
         setPrefix(infixToPrefix(infix).prefixExpression);
+        setShowTable("flex");
+        if(Radio==="option1"){setList(infixToPostfix(infix,1).table);}
+        if(Radio==="option2"){setList(infixToPrefix(infix,1).table);}
     }
 
     const [list, setList] = useState({exp:[],stak:[],conexp:[]});
+
+    const [ShowTable, setShowTable] = useState("none");
+
+    const [Radio, setRadio] = useState("option1");
+
+    const handleRadio =(e)=>{
+        setRadio(e.target.value)
+        if(e.target.value==="option1")
+            setList(infixToPostfix(infix,1).table);
+        if(e.target.value==="option2")
+            setList(infixToPrefix(infix,1).table);
+    }
 
     return (
         <>
@@ -317,7 +332,8 @@ function InfixPostfix() {
                 type="radio"
                 name="react-tips"
                 value="option1"
-                onClick={()=>setList(infixToPostfix(infix,1).table)}
+                checked={true}
+                onClick={handleRadio}
                 className="form-check-input"
                 />
                 Postfix Table
@@ -327,27 +343,37 @@ function InfixPostfix() {
                 type="radio"
                 name="react-tips"
                 value="option2"
-                onClick={()=>setList(infixToPrefix(infix,1).table)}
+                onClick={handleRadio}
                 className="form-check-input"
                 />
                 Prefix Table
             </label>
             </div>
 
-            <div style={styles.List}>
-                
+            <div style={{
+                 display:ShowTable,
+                 flexDirection:"row",
+                 maxWidth:"500px",
+                 width:"90%",
+                 marginBottom:"20px",
+                 //backgroundColor:"#F5F5F5",
+                 padding: "10px",
+                 textAlign:"center",
+                 //boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
+            }}>
+
                 <ol style={styles.Listelement} >
-                <h3>Character</h3>
+                <h3 style={styles.text}>Character</h3>
                 {list.exp.map(article => (<ListItem>{article}</ListItem>))}
                 </ol>
                 <hr style={{borderTop: "3px solid #bbb"}}/>
                 <ol style={styles.Listelement} >
-                <h3>Stack</h3>
+                <h3 style={styles.text}>Stack</h3>
                 {list.stak.map(article => (<ListItem>{article}</ListItem>))}
                 </ol>
                 <hr style={{borderTop: "3px solid #bbb"}}/>
                 <ol style={styles.Listelement} >
-                <h3>Postfix</h3>
+                <h3 style={styles.text}>Postfix</h3>
                 {list.conexp.map(article => (<ListItem>{article}</ListItem>))}
                 </ol>
 
