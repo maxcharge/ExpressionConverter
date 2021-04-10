@@ -372,7 +372,7 @@ function InfixPostfix() {
                 </ol>
                 <hr style={{borderTop: "3px solid #bbb"}}/>
                 <ol style={styles.Listelement} >
-                <h3 style={styles.text}>Postfix</h3>
+                <h3 style={styles.text}>Expression</h3>
                 {list.conexp.map(article => (<ListItem>{article}</ListItem>))}
                 </ol>
 
