@@ -4,13 +4,15 @@ const  styles={
         display:"flex",
         flexDirection:"column",
         maxWidth:"500px",
-        width:"100%",
+        width:"100vw",
         height:"100%",
         margin:"auto",
         marginTop:"50px",
-        //backgroundColor:"#F5F5F5",
+        justifyContent:"center",
+        justifyItems:"center",
+        alignContent:"center",
+        alignItems:"center",
         padding: "10px",
-        //boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
     },
 
     heading:{
@@ -30,8 +32,10 @@ const  styles={
     formBox:{
         display:"flex",
         flexDirection:"column",
+        maxWidth:"500px",
+        width:"90vw",
         height:"100px",
-        marginTop:"20px",
+        marginBottom:"20px",
         backgroundColor:"#F5F5F5",
         padding: "10px",
         boxShadow: "0 5px 10px 0 rgba(0,0,0,0.2)",
@@ -74,7 +78,8 @@ const  styles={
         border: "0.2px solid #dedede",
         backgroundColor:"green",
         opacity:1,
-        color:"#F5F5F5"  
+        color:"#F5F5F5", 
+        textAlign:"center",
     }
 
 }
